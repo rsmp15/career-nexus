@@ -69,9 +69,7 @@ class RoadmapRequest(BaseModel):
     education_level: str
 
 # --- Logic Implementation ---
-from job_matcher import JobMatcher
-from roadmap_generator import RoadmapGenerator
-from gemini_service import GeminiService
+# Imports moved to lazy loading inside endpoints
 
 job_matcher = None # Lazy init to ensure data is loaded first
 gemini_service = None # Lazy init
@@ -87,7 +85,8 @@ def recommend_jobs(profile: UserProfile):
          raise HTTPException(status_code=500, detail="Job data not loaded")
     
     if job_matcher is None:
-        job_matcher = JobMatcher(jobs_df)
+        from job_matcher import JobMatcher
+        job_matcher = JobMatcher(jobs_df, gemini_service=gemini_service)
 
     print(f"Received Profile: {profile.life_goal} / {profile.mbti_code} / {profile.riasec_code}")
     
@@ -116,6 +115,7 @@ def get_roadmap(req: RoadmapRequest):
         roadmap = gemini_service.generate_roadmap(req.title, req.education_level)
     else:
         print("Fallback to Static Roadmap")
+        from roadmap_generator import RoadmapGenerator
         roadmap = RoadmapGenerator.generate(req.onet_code, req.title, req.education_level)
         
     return {"roadmap": roadmap}
@@ -131,6 +131,7 @@ if __name__ == "__main__":
     load_dotenv(env_path)
     
     # Re-init service after loading env to catch key
+    from gemini_service import GeminiService
     gemini_service = GeminiService() 
     
     port = int(os.environ.get("PORT", 8000))

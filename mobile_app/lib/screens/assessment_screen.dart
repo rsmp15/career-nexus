@@ -256,7 +256,7 @@ class _ClaySelectionButton extends StatelessWidget {
       child: ClayContainer(
         onTap: onTap,
         color: isSelected
-            ? AppTheme.primary.withOpacity(0.1)
+            ? AppTheme.primary.withValues(alpha:0.1)
             : AppTheme.surface,
         depth: isSelected ? -5 : 8, // Pressed vs Floating
         borderRadius: 16,

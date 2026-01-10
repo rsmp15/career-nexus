@@ -6,5 +6,5 @@ python-multipart
 google-generativeai
 tenacity
 scikit-learn
-sentence-transformers
-aiofiles
+
+python-dotenv

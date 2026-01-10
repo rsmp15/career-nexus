@@ -122,7 +122,7 @@ class _GoalClayCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.1),
+                color: iconColor.withValues(alpha:0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: iconColor, size: 32),
@@ -151,7 +151,7 @@ class _GoalClayCard extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 16,
-              color: AppTheme.textSecondary.withOpacity(0.5),
+              color: AppTheme.textSecondary.withValues(alpha:0.5),
             ),
           ],
         ),

@@ -130,3 +130,23 @@ class GeminiService:
         except Exception as e:
             logger.error(f"Domain expansion failed: {e}")
             return []
+    def get_embedding(self, text: str) -> list[float]:
+        """
+        Generates embeddings using the Gemini API.
+        """
+        if not self.is_configured:
+            logger.warning("Gemini Service not configured, returning empty embedding.")
+            return []
+            
+        try:
+            # Using the new text-embedding-004 model
+            result = genai.embed_content(
+                model="models/text-embedding-004",
+                content=text,
+                task_type="retrieval_document",
+                title="Job Description" 
+            )
+            return result['embedding']
+        except Exception as e:
+            logger.error(f"Embedding generation failed: {e}")
+            return []

@@ -36,7 +36,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/roadmap'),
+        Uri.parse('https://career-nexus-api.onrender.com/roadmap'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "onet_code": code,
@@ -116,13 +116,13 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               child: ClayContainer(
                 depth: 8,
                 borderRadius: 20,
-                color: synergyColor.withOpacity(0.1),
+                color: synergyColor.withValues(alpha:0.1),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: synergyColor.withOpacity(0.2),
+                        color: synergyColor.withValues(alpha:0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(Icons.hub, color: synergyColor),

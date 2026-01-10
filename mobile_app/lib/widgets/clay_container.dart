@@ -65,7 +65,7 @@ class ClayContainer extends StatelessWidget {
           boxShadow: [
             // Dark Shadow (Bottom Right)
             BoxShadow(
-              color: AppTheme.clayShadowDark.withOpacity(0.4),
+              color: AppTheme.clayShadowDark.withValues(alpha:0.4),
               offset: shadowOffset,
               blurRadius: spread,
             ),

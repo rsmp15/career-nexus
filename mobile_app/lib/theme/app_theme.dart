@@ -60,7 +60,7 @@ class AppTheme {
           backgroundColor: primary,
           foregroundColor: Colors.white,
           elevation: 10,
-          shadowColor: primary.withOpacity(0.4),
+          shadowColor: primary.withValues(alpha:0.4),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),

@@ -33,7 +33,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Future<void> _fetchRecommendations(Map args) async {
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/recommend'),
+        Uri.parse('https://career-nexus-api.onrender.com/recommend'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(args),
       );
@@ -78,7 +78,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   vertical: 8,
                 ),
                 color: selectedJobCodes.length == 3
-                    ? AppTheme.secondary.withOpacity(0.2)
+                    ? AppTheme.secondary.withValues(alpha:0.2)
                     : AppTheme.surface,
                 child: Text(
                   "${selectedJobCodes.length}/3 Picked",
@@ -185,7 +185,7 @@ class _JobClayCard extends StatelessWidget {
       child: ClayContainer(
         onTap: onTap,
         color: isSelected
-            ? AppTheme.primary.withOpacity(0.05)
+            ? AppTheme.primary.withValues(alpha:0.05)
             : AppTheme.surface,
         depth: isSelected ? -5 : 8, // Pressed vs Floating effect
         borderRadius: 20,
@@ -219,7 +219,7 @@ class _JobClayCard extends StatelessWidget {
               child: LinearPercentIndicator(
                 lineHeight: 8.0,
                 percent: percent,
-                backgroundColor: Colors.grey.withOpacity(0.2),
+                backgroundColor: Colors.grey.withValues(alpha:0.2),
                 progressColor: AppTheme.secondary,
                 padding: EdgeInsets.zero,
                 barRadius: const Radius.circular(4),

@@ -1,6 +1,12 @@
 from gemini_service import GeminiService
 import logging
 
+import os
+from dotenv import load_dotenv
+
+# Load env for local testing
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
 logging.basicConfig(level=logging.INFO)
 
 print("--- Testing Gemini Service ---")
@@ -26,3 +32,14 @@ else:
              
     except Exception as e:
         print(f"\n❌ CRITICAL EXCEPTION: {e}")
+
+    print("\n--- Testing Embeddings ---")
+    try:
+        text = "Software Engineer at Google"
+        emb = service.get_embedding(text)
+        if len(emb) == 768:
+            print("✅ Success: Embedding generated with dimension 768.")
+        else:
+             print(f"⚠️ Warning: Embedding generated but unexpected dimension: {len(emb)}")
+    except Exception as e:
+         print(f"❌ EMBEDDING EXCEPTION: {e}")

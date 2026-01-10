@@ -4,8 +4,9 @@ import re
 from job_vector_store import JobVectorStore
 
 class JobMatcher:
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self, data: pd.DataFrame, gemini_service=None):
         self.data = data
+        self.gemini_service = gemini_service
         self.mappings = self._initialize_mappings()
         
         # Precompute lower case titles for speed
@@ -14,7 +15,7 @@ class JobMatcher:
         
         # Initialize Vector Store (RAG)
         print("Initializing Semantic Vector Store...")
-        self.vector_store = JobVectorStore(data)
+        self.vector_store = JobVectorStore(data, gemini_service=gemini_service)
 
     def _initialize_mappings(self):
         # ... (Same as before, simplified for this snippet to focus on logic changes) ...
