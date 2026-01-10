@@ -8,6 +8,17 @@ import re
 
 app = FastAPI(title="CareerNexus AI Backend", version="1.0.0")
 
+# --- CORS Middleware ---
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 # --- Data Loading ---
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "Occupation Data.txt")
 
