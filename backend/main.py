@@ -5,6 +5,10 @@ import pandas as pd
 import json
 import os
 import re
+from dotenv import load_dotenv
+
+# Load env vars immediately
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 app = FastAPI(title="CareerNexus AI Backend", version="1.0.0")
 
@@ -38,11 +42,27 @@ def load_data():
 
 @app.on_event("startup")
 async def startup_event():
+    print("--- Startup Event Triggered ---")
     load_data()
 
 @app.get("/")
 def read_root():
-    return {"message": "CareerNexus AI Backend is Reasoning..."}
+    return {"message": "CareerNexus AI Backend is Running (Async Mode)."}
+
+@app.get("/health")
+def health_check():
+    ai_status = False
+    message = "AI functionality is warming up. Basic rule-based matching is active."
+    
+    if job_matcher and hasattr(job_matcher, 'vector_store') and job_matcher.vector_store.is_ready:
+        ai_status = True
+        message = "System Fully Operational (AI Ready)."
+        
+    return {
+        "status": "healthy",
+        "ai_ready": ai_status,
+        "message": message
+    }
 
 # --- Pydantic Models for Input ---
 
@@ -123,14 +143,9 @@ def get_roadmap(req: RoadmapRequest):
 if __name__ == "__main__":
     import uvicorn
     import os
-    from dotenv import load_dotenv
-    
-    # Explicitly load .env from the current directory
-    env_path = os.path.join(os.path.dirname(__file__), '.env')
-    print(f"Loading env from: {env_path}")
-    load_dotenv(env_path)
     
     # Re-init service after loading env to catch key
+    # (Optional, but good for safety if run directly)
     from gemini_service import GeminiService
     gemini_service = GeminiService() 
     

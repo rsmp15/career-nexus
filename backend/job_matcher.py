@@ -178,6 +178,7 @@ class JobMatcher:
             hybrid_score = (semantic_score * 10) + rule_score
             
             # Filter low quality matches
+            # Filter low quality matches
             if hybrid_score < 2.5: continue
             
             final_results.append({

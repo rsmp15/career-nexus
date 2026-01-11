@@ -4,7 +4,10 @@ import 'dart:convert';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mobile_app/theme/app_theme.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:mobile_app/widgets/clay_container.dart'; // Add this
+import 'package:mobile_app/widgets/clay_container.dart';
+import 'package:mobile_app/widgets/animated_background.dart';
+
+import '../config.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key});
@@ -33,7 +36,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Future<void> _fetchRecommendations(Map args) async {
     try {
       final response = await http.post(
-        Uri.parse('https://career-nexus-api.onrender.com/recommend'),
+        Uri.parse('${AppConfig.baseUrl}/recommend'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(args),
       );
@@ -61,88 +64,127 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text("Your Matches"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: ClayContainer(
-                depth: 5,
-                borderRadius: 12,
+      backgroundColor: Colors.transparent, // Allow animated background to show
+      extendBodyBehindAppBar: true,
+      body: AnimatedGradientBackground(
+        child: Column(
+          children: [
+            // Custom AppBar Area to handle SafeArea
+            SafeArea(
+              bottom: false,
+              child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
+                  horizontal: 16,
                   vertical: 8,
                 ),
-                color: selectedJobCodes.length == 3
-                    ? AppTheme.secondary.withValues(alpha:0.2)
-                    : AppTheme.surface,
-                child: Text(
-                  "${selectedJobCodes.length}/3 Picked",
-                  style: TextStyle(
-                    color: selectedJobCodes.length == 3
-                        ? AppTheme.secondary
-                        : Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Your Matches",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.textPrimary,
+                      ),
+                    ),
+                    ClayContainer(
+                      depth: 5,
+                      borderRadius: 12,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      color: selectedJobCodes.length == 3
+                          ? AppTheme.secondary.withValues(alpha: 0.2)
+                          : AppTheme.surface,
+                      child: Text(
+                        "${selectedJobCodes.length}/3 Picked",
+                        style: TextStyle(
+                          color: selectedJobCodes.length == 3
+                              ? AppTheme.secondary
+                              : Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : error.isNotEmpty
-          ? Center(child: Text(error, textAlign: TextAlign.center))
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "We found these perfect fits for you.",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    itemCount: jobs.length,
-                    itemBuilder: (context, index) {
-                      final job = jobs[index];
-                      final isSelected = selectedJobCodes.contains(
-                        job['onet_code'],
-                      );
 
-                      return _JobClayCard(
-                        job: job,
-                        isSelected: isSelected,
-                        onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              selectedJobCodes.remove(job['onet_code']);
-                            } else {
-                              if (selectedJobCodes.length < 3) {
-                                selectedJobCodes.add(job['onet_code']);
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Select only 3 top choices!"),
-                                  ),
-                                );
-                              }
-                            }
-                          });
-                        },
-                      ).animate().fadeIn(delay: (index * 100).ms).slideX();
-                    },
-                  ),
-                ),
-              ],
+            // Main Content
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : error.isNotEmpty
+                  ? Center(child: Text(error, textAlign: TextAlign.center))
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                          child: Text(
+                            "We found these perfect fits for you.",
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(color: AppTheme.textSecondary),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 80, top: 0),
+                            itemCount: jobs.length,
+                            itemBuilder: (context, index) {
+                              final job = jobs[index];
+                              final isSelected = selectedJobCodes.contains(
+                                job['onet_code'],
+                              );
+
+                              return _JobClayCard(
+                                    job: job,
+                                    isSelected: isSelected,
+                                    onTap: () {
+                                      setState(() {
+                                        if (isSelected) {
+                                          selectedJobCodes.remove(
+                                            job['onet_code'],
+                                          );
+                                        } else {
+                                          if (selectedJobCodes.length < 3) {
+                                            selectedJobCodes.add(
+                                              job['onet_code'],
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Select only 3 top choices!",
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      });
+                                    },
+                                  )
+                                  .animate()
+                                  .fadeIn(delay: (index * 100).ms)
+                                  .slideX(
+                                    begin: 0.2,
+                                    end: 0,
+                                    curve: Curves.easeOutQuad,
+                                  );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
             ),
+          ],
+        ),
+      ),
       floatingActionButton: selectedJobCodes.length == 3
           ? FloatingActionButton.extended(
               onPressed: () {
@@ -185,7 +227,7 @@ class _JobClayCard extends StatelessWidget {
       child: ClayContainer(
         onTap: onTap,
         color: isSelected
-            ? AppTheme.primary.withValues(alpha:0.05)
+            ? AppTheme.primary.withValues(alpha: 0.05)
             : AppTheme.surface,
         depth: isSelected ? -5 : 8, // Pressed vs Floating effect
         borderRadius: 20,
@@ -219,7 +261,7 @@ class _JobClayCard extends StatelessWidget {
               child: LinearPercentIndicator(
                 lineHeight: 8.0,
                 percent: percent,
-                backgroundColor: Colors.grey.withValues(alpha:0.2),
+                backgroundColor: Colors.grey.withValues(alpha: 0.2),
                 progressColor: AppTheme.secondary,
                 padding: EdgeInsets.zero,
                 barRadius: const Radius.circular(4),

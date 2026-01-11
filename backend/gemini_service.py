@@ -65,6 +65,9 @@ class GeminiService:
             ]
         )
 
+    from functools import lru_cache
+
+    @lru_cache(maxsize=100)
     def generate_roadmap(self, role: str, level: str) -> str:
         # Static Roadmap Fallback Helper
         def get_static_roadmap():
