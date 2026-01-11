@@ -88006,7 +88006,7 @@ wQ(a){return this.a7W(a)},
 a7W(a){var s=0,r=A.O(t.H),q=1,p=[],o=this,n,m,l,k,j,i
 var $async$wQ=A.P(function(b,c){if(b===1){p.push(c)
 s=q}for(;;)switch(s){case 0:q=3
-l=A.fV("http://127.0.0.1:8000/recommend",0,null)
+l=A.fV("https://career-nexus-api.onrender.com/recommend",0,null)
 k=t.N
 k=A.ah(["Content-Type","application/json"],k,k)
 s=6
@@ -88118,7 +88118,7 @@ a7X(a,b){var s=0,r=A.O(t.H),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f
 var $async$rS=A.P(function(c,d){if(c===1){o.push(d)
 s=p}for(;;)switch(s){case 0:if(n.e.am(a)){s=1
 break}p=4
-j=A.fV("http://127.0.0.1:8000/roadmap",0,null)
+j=A.fV("https://career-nexus-api.onrender.com/roadmap",0,null)
 i=t.N
 h=A.ah(["Content-Type","application/json"],i,i)
 s=7
