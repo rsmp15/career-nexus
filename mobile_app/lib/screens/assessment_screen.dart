@@ -159,6 +159,24 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     desc: "Scores from HumanBenchmark.com",
                     child: Column(
                       children: [
+                        TextButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/webview',
+                              arguments: {'url': 'https://humanbenchmark.com'},
+                            );
+                          },
+                          icon: const Icon(Icons.open_in_new, size: 16),
+                          label: const Text(
+                            "Don't know your scores? Take the test",
+                          ),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppTheme.secondary,
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         _GlassInput(
                           label: "Reaction Time (ms)",
                           controller: _reactionController,
@@ -199,7 +217,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       child: Text(
                         "Back",
                         style: TextStyle(
-                          color: AppTheme.textPrimary.withOpacity(0.7),
+                          color: AppTheme.textPrimary.withValues(alpha: 0.7),
                         ),
                       ),
                     )

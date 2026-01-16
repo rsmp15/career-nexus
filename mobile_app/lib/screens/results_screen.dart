@@ -6,7 +6,7 @@ import 'package:mobile_app/theme/app_theme.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:mobile_app/widgets/clay_container.dart';
 import 'package:mobile_app/widgets/animated_background.dart';
-
+import 'package:mobile_app/widgets/hypnotic_loader.dart';
 import '../config.dart';
 
 class ResultsScreen extends StatefulWidget {
@@ -28,8 +28,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (jobs.isEmpty && isLoading) {
-      final args = ModalRoute.of(context)!.settings.arguments as Map;
-      _fetchRecommendations(args);
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Map) {
+        _fetchRecommendations(args);
+      } else {
+        setState(() {
+          isLoading = false;
+          error = "Missing session data. Please start from the beginning.";
+        });
+      }
     }
   }
 
@@ -116,7 +123,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
             // Main Content
             Expanded(
               child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const HypnoticLoader()
                   : error.isNotEmpty
                   ? Center(child: Text(error, textAlign: TextAlign.center))
                   : Column(

@@ -23,11 +23,11 @@ class AnimatedGradientBackground extends StatelessWidget {
                 height: 400,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppTheme.primary.withOpacity(0.15),
+                  color: AppTheme.primary.withValues(alpha:0.15),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 100,
-                      color: AppTheme.primary.withOpacity(0.15),
+                      color: AppTheme.primary.withValues(alpha:0.15),
                     ),
                   ],
                 ),
@@ -45,11 +45,11 @@ class AnimatedGradientBackground extends StatelessWidget {
                 height: 300,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppTheme.secondary.withOpacity(0.1),
+                  color: AppTheme.secondary.withValues(alpha:0.1),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 80,
-                      color: AppTheme.secondary.withOpacity(0.1),
+                      color: AppTheme.secondary.withValues(alpha:0.1),
                     ),
                   ],
                 ),

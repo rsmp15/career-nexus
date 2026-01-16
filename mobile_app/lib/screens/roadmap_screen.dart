@@ -6,7 +6,7 @@ import 'package:mobile_app/theme/app_theme.dart';
 import 'package:mobile_app/widgets/clay_container.dart';
 import 'package:mobile_app/widgets/animated_background.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:mobile_app/widgets/hypnotic_loader.dart';
 import '../config.dart';
 
 class RoadmapScreen extends StatefulWidget {
@@ -225,7 +225,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const CircularProgressIndicator(),
+                              const Expanded(child: HypnoticLoader()),
                               const SizedBox(height: 16),
                               Text(
                                 "Consulting AI Strategist...",
