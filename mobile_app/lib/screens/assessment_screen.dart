@@ -18,8 +18,17 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   // Data State
   String lifeGoal = "";
   String educationLevel = "Undergrad";
+  String? selectedAcademicYear;
   String mbtiCode = "";
   String riasecCode = "";
+
+  final List<String> academicYearOptions = [
+    '1st Year',
+    '2nd Year',
+    '3rd Year',
+    '4th Year',
+    'Diploma',
+  ];
 
   // Cognitive
   final TextEditingController _reactionController = TextEditingController();
@@ -54,6 +63,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
         "mbti_code": _mbtiController.text,
         "riasec_code": _riasecController.text,
         "education_level": educationLevel,
+        "academic_year": selectedAcademicYear,
         "domain_interest": _domainController.text,
         "cognitive_scores": {
           "reaction_time": int.tryParse(_reactionController.text) ?? 300,
@@ -122,15 +132,60 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                           onTap: () =>
                               setState(() => educationLevel = "Undergrad"),
                         ),
-                        if (educationLevel == "Undergrad")
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: _GlassInput(
-                              controller: _domainController,
-                              label: "Domain Interest (e.g. CS)",
-                              hint: "What are you studying?",
+                        if (educationLevel == "Undergrad") ...[
+                          const SizedBox(height: 16),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Select your year/status",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.textSecondary,
+                              ),
                             ),
                           ),
+                          const SizedBox(height: 12),
+                          GlassContainer(
+                            opacity: 0.15,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            borderRadius: BorderRadius.circular(16),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: selectedAcademicYear,
+                                hint: Text(
+                                  "Choose year/diploma",
+                                  style: TextStyle(
+                                    color: AppTheme.textSecondary.withValues(
+                                      alpha: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: true,
+                                dropdownColor: Colors.grey[900],
+                                style: const TextStyle(
+                                  color: AppTheme.textPrimary,
+                                ),
+                                items: academicYearOptions.map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedAcademicYear = newValue;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _GlassInput(
+                            controller: _domainController,
+                            label: "Domain Interest (e.g. CS)",
+                            hint: "What are you studying?",
+                          ),
+                        ],
                       ],
                     ),
                   ),

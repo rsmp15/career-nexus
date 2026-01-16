@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:mobile_app/widgets/glass_container.dart';
 import 'package:mobile_app/widgets/animated_background.dart';
 import 'package:mobile_app/theme/app_theme.dart';
@@ -13,95 +13,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  void _showGoalSelection(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        decoration: BoxDecoration(
-          color: AppTheme.background.withValues(alpha: 0.95),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 40,
-              offset: const Offset(0, -10),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Launch Your Journey",
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.textPrimary,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        "Select your primary motivation to begin the assessment.",
-                        style: TextStyle(color: AppTheme.textSecondary),
-                      ),
-                      const SizedBox(height: 40),
-                      _GoalGlassCard(
-                        title: "Money",
-                        icon: Icons.monetization_on_outlined,
-                        description:
-                            "Focus on financial freedom & wealth generation.",
-                        iconColor: Colors.amber,
-                        delay: 200,
-                        onTap: () => _navigateToAssessment(context, "Money"),
-                      ),
-                      _GoalGlassCard(
-                        title: "Power",
-                        icon: Icons.gavel_outlined,
-                        description: "Paths leading to influence & leadership.",
-                        iconColor: Colors.redAccent,
-                        delay: 400,
-                        onTap: () => _navigateToAssessment(context, "Power"),
-                      ),
-                      _GoalGlassCard(
-                        title: "Achievement",
-                        icon: Icons.emoji_events_outlined,
-                        description:
-                            "Mastery, recognition, and skill excellence.",
-                        iconColor: Colors.blueAccent,
-                        delay: 600,
-                        onTap: () =>
-                            _navigateToAssessment(context, "Achievement"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,7 +81,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ).animate().fadeIn(delay: 400.ms),
           const SizedBox(height: 40),
           ElevatedButton(
-            onPressed: () => _showGoalSelection(context),
+            onPressed: () => Navigator.pushNamed(context, '/self_intro'),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 20),
               backgroundColor: AppTheme.primary,
@@ -468,7 +379,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       child: Column(
         children: [
           ElevatedButton(
-            onPressed: () => _showGoalSelection(context),
+            onPressed: () => Navigator.pushNamed(context, '/self_intro'),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 20),
               backgroundColor: AppTheme.primary,
@@ -503,79 +414,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  void _navigateToAssessment(BuildContext context, String goal) {
-    Navigator.pushNamed(context, '/assessment', arguments: {'goal': goal});
-  }
-}
-
-class _GoalGlassCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final String description;
-  final Color iconColor;
-  final int delay;
-  final VoidCallback onTap;
-
-  const _GoalGlassCard({
-    required this.title,
-    required this.icon,
-    required this.description,
-    required this.iconColor,
-    required this.delay,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
-      child: GlassContainer(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: iconColor.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: iconColor, size: 32),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.nunito(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: AppTheme.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: AppTheme.textSecondary.withValues(alpha: 0.5),
-            ),
-          ],
-        ),
-      ).animate().fadeIn(delay: delay.ms).slideX(begin: 0.2),
     );
   }
 }

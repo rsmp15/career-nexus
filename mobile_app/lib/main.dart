@@ -8,6 +8,7 @@ import 'package:mobile_app/screens/assessment_screen.dart';
 import 'package:mobile_app/screens/results_screen.dart';
 import 'package:mobile_app/screens/roadmap_screen.dart';
 import 'package:mobile_app/screens/web_view_screen.dart';
+import 'package:mobile_app/screens/self_intro_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,7 @@ class CareerNexusApp extends StatelessWidget {
         '/results': (context) => const ResultsScreen(),
         '/roadmap_generation': (context) => const RoadmapScreen(),
         '/webview': (context) => const WebViewScreen(),
+        '/self_intro': (context) => const SelfIntroScreen(),
       },
     );
   }

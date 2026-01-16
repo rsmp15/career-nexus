@@ -79,8 +79,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   Widget _buildMobileWebView() {
-    if (_controller == null)
+    if (_controller == null) {
       return const Center(child: CircularProgressIndicator());
+    }
     return Stack(
       children: [
         WebViewWidget(controller: _controller!),
